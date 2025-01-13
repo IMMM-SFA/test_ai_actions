@@ -1,7 +1,9 @@
 name: Python Bot
 
 on:
-  [push, pull]
+  push:
+  pull_request:
+
 
 jobs:
   run-python:

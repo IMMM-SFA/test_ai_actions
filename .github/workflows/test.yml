@@ -14,8 +14,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
+      
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
 
       - name: Run Python Code
-        run: |
-          echo 'print("It works!")' > script.py
-          python script.py
+        env:
+          AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
+          AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+        run: python format_file.py
+          

@@ -18,7 +18,6 @@ llm = AzureChatOpenAI(
     max_tokens=250,
     timeout=None,
     max_retries=2,
-    # other params...
 )
 
 prompt = ChatPromptTemplate.from_messages(
@@ -40,4 +39,3 @@ chain.invoke(
 )
 
 print(chain)
-print(chain.content)

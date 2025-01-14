@@ -34,10 +34,8 @@ chain = prompt | llm
 ai_msg = chain.invoke(
     {
         "language": "Python",
-        "input": "Go through all the scripts in this repository and provide detailed feedback and suggestions on how to make the scripts easier to read, cleaner, and more reproducible.",
+        "input": f"Go through all the scripts in the repository at {os.environ["REPO_URL"]} and provide detailed feedback and suggestions on how to make the scripts easier to read, cleaner, and more reproducible.",
     }
 )
 
-print(chain)
-print(ai_msg)
 print(ai_msg.content)

@@ -31,7 +31,7 @@ prompt = ChatPromptTemplate.from_messages(
 )
 
 chain = prompt | llm
-chain.invoke(
+ai_msg = chain.invoke(
     {
         "language": "Python",
         "input": "Go through all the scripts in this repository and provide detailed feedback and suggestions on how to make the scripts easier to read, cleaner, and more reproducible.",
@@ -39,3 +39,5 @@ chain.invoke(
 )
 
 print(chain)
+print(ai_msg)
+print(ai_msg.content)

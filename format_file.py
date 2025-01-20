@@ -5,6 +5,7 @@ from langchain_core.prompts import ChatPromptTemplate
 
 
 file_contents = {}
+file_extensions = [".ipynb", ".py"]
 
 def get_file_contents(path='.'):
     for filename in sorted((f for f in os.listdir(path) if not f.startswith(".")), key=str.lower):
@@ -13,7 +14,7 @@ def get_file_contents(path='.'):
             get_file_contents(full_path)
         else:
             _, file_extension = os.path.splitext(filename)
-            if (".ipynb" or ".py") in file_extension:
+            if any(substring in file_extension for substring in file_extensions):
                     with open(full_path) as f: 
                         file_contents.update({filename: f.read()})
 

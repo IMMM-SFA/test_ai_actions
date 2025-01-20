@@ -13,14 +13,13 @@ def get_file_contents(path='.'):
             get_file_contents(full_path)
         else:
             _, file_extension = os.path.splitext(filename)
-            print(file_extension)
             if (".ipynb" or ".py") in file_extension:
                     with open(full_path) as f: 
                         file_contents.update({filename: f.read()})
 
 
 get_file_contents()
-print(f"Found the following files: {file_contents.keys()}")
+print(f"Found the following files: {list(file_contents.keys())}")
 
 try:
     os.environ["AZURE_OPENAI_API_KEY"]
@@ -50,7 +49,7 @@ chain = prompt | llm
 ai_msg = chain.invoke(
     {
         "language": "Python",
-        "input": f"Go through all the scripts in the following dictionary of scripts and provide detailed feedback and suggestions on how to make the scripts easier to read, cleaner, and more reproducible: {file_contents}",
+        "input": f"Go through all the scripts in the following dictionary of scripts and provide detailed feedback and suggestions on how to make the scripts easier to read, cleaner, and more reproducible. Provide specific examples and reference code blocks: {file_contents}",
     }
 )
 

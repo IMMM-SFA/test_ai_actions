@@ -1,27 +1,29 @@
-Let's go through each script and provide feedback for improvements in readability, cleanliness, and reproducibility.
+Let's go through each script in the provided dictionary and provide detailed feedback for improvements.
 
 ### `code_review.py`
 
-1. **Imports and Dependency Management**: 
-   - Ensure that all used packages are installed. Consider using a requirements file for reproducibility.
-   - The `Error` exception in the `try-except` block should be `Exception` or a more specific exception type (`KeyError`).
+1. **Imports**: 
+   - Consider organizing imports alphabetically and separating standard library imports from third-party imports with a newline for better readability.
 
-    ```python
-    try:
-        os.environ["AZURE_OPENAI_API_KEY"]
-    except KeyError as e:
-        print(f"No AZURE_OPENAI_API_KEY environment variable was found: {e}")
-    ```
+2. **Function `get_file_contents`**:
+   - It would be better to document the function with a docstring explaining what it does, its parameters, and its return value.
+   - Consider renaming variables for clarity. For instance, `file_contents` is descriptive, but `file_extensions` could be renamed to `allowed_extensions`.
+   - Using `os.walk()` might simplify iterating through directories.
 
-2. **Function for File Content Retrieval**:
-   - Use `os.walk()` to simplify directory traversal.
-   - Use `with` statement for file operations to ensure files are properly closed.
-   - Currently, the function `get_file_contents()` is recursive and might be better suited with iteration.
+3. **Environment Variable Check**:
+   - The `except Error` block should specify the correct exception, such as `except KeyError`.
 
-    ```python
-    def get_file_contents(path='.'):
-        for root, _, files in os.walk(path):
-            for filename in files:
-                if filename.endswith(tuple(file_extensions)):
-                    full_path = os.path.join(root, filename)
-                    with open(full_path, 'r') as f
+4. **General**:
+   - Consider using `logging` instead of `print` to handle messages. This would be more flexible and suitable for larger applications.
+
+```python
+import os
+import logging
+
+from langchain_openai import AzureChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+
+logging.basicConfig(level=logging.INFO)
+
+file_contents = {}
+allowed_extensions = [".ipynb", ".

@@ -2,16 +2,19 @@ name: Python Bot
 
 on: [push, pull_request]
 
-permissions:                    # Global permissions configuration starts here
-  contents: read                # 'read' access to repository contents
-  pull-requests: write          # 'write' access to pull requests
 
 jobs:
   run-python:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write                 # 'read' access to repository contents
+      pull-requests: write          # 'write' access to pull requests
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -25,7 +28,7 @@ jobs:
         env:
           AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
           AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
-        run: python format_file.py
+        run: python code_review.py
 
       - name: Commit files
         id: commit
@@ -45,4 +48,3 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
            branch: ${{ github.ref }}
-           github_token: ${{ secrets.GITHUB_TOKEN }}

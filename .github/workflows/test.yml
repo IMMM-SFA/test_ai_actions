@@ -37,10 +37,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add "code_review.md"
           if [-z "$(git status --porcelain)"]; then
-             echo "::set-output name=push::false"
+             echo "name=push::false" >> $GITHUB_OUTPUT
+
           else
              git commit -m "Save code review file." -a
-             echo "::set-output name=push::true"
+             echo "name=push::true" >> $GITHUB_OUTPUT
           fi
         shell: bash
       - name: Push changes

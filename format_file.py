@@ -57,4 +57,5 @@ ai_msg = chain.invoke(
 print(ai_msg.content)
 
 with open("code_review.txt", "w") as file:
+  print("Writing the code review to code_review.txt.")
   file.write(ai_msg.content)

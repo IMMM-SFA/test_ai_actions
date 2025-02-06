@@ -1,29 +1,27 @@
-Let's go through each script in the provided dictionary and provide detailed feedback for improvements.
+Let's go through each script in the provided collection one by one and provide feedback to improve readability, cleanliness, and reproducibility.
 
-### `code_review.py`
+### `Step_1a_Historical_NLCD_raster_processing.py`
 
-1. **Imports**: 
-   - Consider organizing imports alphabetically and separating standard library imports from third-party imports with a newline for better readability.
+1. **Imports Organization**:
+   - Organize imports into standard library, third-party libraries, and then local imports if any. This helps in better readability.
+   - Example:
+     ```python
+     import os
 
-2. **Function `get_file_contents`**:
-   - It would be better to document the function with a docstring explaining what it does, its parameters, and its return value.
-   - Consider renaming variables for clarity. For instance, `file_contents` is descriptive, but `file_extensions` could be renamed to `allowed_extensions`.
-   - Using `os.walk()` might simplify iterating through directories.
+     import pandas as pd
+     import numpy as np
+     import matplotlib.pyplot as plt
+     from matplotlib.ticker import MultipleLocator, AutoMinorLocator
+     import geopandas as gpd
+     import contextily as cx
+     import rasterio
+     from rasterio.mask import mask
+     from rasterio.plot import show
+     ```
 
-3. **Environment Variable Check**:
-   - The `except Error` block should specify the correct exception, such as `except KeyError`.
+2. **Hardcoded Paths**:
+   - Replace `os.chdir(Step 1a folder path)` with a variable or configuration file to make the script more flexible and less error-prone.
+   - Use `os.path.join()` to construct file paths, which ensures compatibility across different operating systems.
 
-4. **General**:
-   - Consider using `logging` instead of `print` to handle messages. This would be more flexible and suitable for larger applications.
-
-```python
-import os
-import logging
-
-from langchain_openai import AzureChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-
-logging.basicConfig(level=logging.INFO)
-
-file_contents = {}
-allowed_extensions = [".ipynb", ".
+3. **Function Encapsulation**:
+   - Encapsulate repetitive code blocks (like reading files, clipping rasters) into functions. This improves reusability

@@ -19,7 +19,17 @@ def get_file_contents(path='.'):
                         file_contents.update({filename: f.read()})
 
 
+def drop_current_file(file_contents):
+    current_filename = os.path.basename(__file__)
+    file_contents.pop(current_filename, None)
+    return file_contents
+
+
+# Get a dictionary of all files in the current directory and subdirectories
 get_file_contents()
+# Drop the current file from the dictionary
+drop_current_file(file_contents)
+
 print(f"Found the following files: {list(file_contents.keys())}")
 
 try:

@@ -34,7 +34,7 @@ print(f"Found the following files: {list(file_contents.keys())}")
 
 try:
     os.environ["AZURE_OPENAI_API_KEY"]
-except Error as e:
+except Exception as e:
     print(f"No AZURE_OPENAI_API_KEY environment variable was found: {e}")
 
 llm = AzureChatOpenAI(
@@ -50,20 +50,26 @@ prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You are a friendly {language} expert performing a code review to provide helpful feedback to the programmer.",
+            "You are a friendly {language} expert great at performing code reviews and editing code.",
         ),
         ("human", "{input}"),
     ]
 )
 
 chain = prompt | llm
-ai_msg = chain.invoke(
-    {
-        "language": "Python",
-        "input": f"Go through all the scripts in the following dictionary of scripts and provide detailed feedback and suggestions on how to make the scripts easier to read, cleaner, and more reproducible. Provide specific examples and reference code blocks: {file_contents}",
-    }
-)
 
-with open("code_review.md", "w") as file:
-  print("Writing the code review to `code_review.md`.")
-  file.write(ai_msg.content)
+def run_ai_model(filename):
+    ai_msg = chain.invoke(
+        {
+            "language": "Python",
+            "input": f"Edit this script to make it easier to read, cleaner, and more reproducible. Add comments where necessary: {file_contents[filename]}",
+        }
+    )
+
+    with open(f"llm_review/{filename}", "w") as file:
+        print(f"Writing the edited file to llm_review/{filename}")
+        file.write(ai_msg.content)
+
+
+for filename in file_contents:
+    run_ai_model(filename)

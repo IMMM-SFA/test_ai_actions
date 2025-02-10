@@ -35,10 +35,11 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add "code_review.md"
-          git commit -m "Save code review file."
+          git checkout -b "bot/code-review"
+          git add "llm_review/*"
+          git commit -m "Save code review files."
 
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
-           branch: ${{ github.ref }}
+           branch: bot/code-review

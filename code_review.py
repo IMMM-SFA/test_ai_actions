@@ -66,8 +66,11 @@ def run_ai_model(filename):
         }
     )
 
-    with open(f"llm_review/{filename}", "w+") as file:
-        print(f"Writing the edited file to llm_review/{filename}")
+    llm_review_dir = "llm_review"
+    os.makedirs(llm_review_dir, exist_ok=True)
+
+    with open(os.path.join(llm_review_dir, filename), "w+") as file:
+        print(f"Writing the edited file to {llm_review_dir}/{filename}")
         file.write(ai_msg.content)
 
 

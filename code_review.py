@@ -8,27 +8,23 @@ file_contents = {}
 file_extensions = [".ipynb", ".py"]
 
 def get_file_contents(path='.'):
+    """Return a dictionary of all files with the specified file_extensions in the current directory and subdirectories not including this file."""
     for filename in sorted((f for f in os.listdir(path) if not f.startswith(".")), key=str.lower):
         full_path = os.path.join(path, filename)
         if os.path.isdir(full_path):
             get_file_contents(full_path)
+        elif filename == os.path.basename(__file__):
+            continue
         else:
             _, file_extension = os.path.splitext(filename)
             if any(substring in file_extension for substring in file_extensions):
                     with open(full_path) as f: 
+                        print(full_path)
                         file_contents.update({filename: f.read()})
 
 
-def drop_current_file(file_contents):
-    current_filename = os.path.basename(__file__)
-    file_contents.pop(current_filename, None)
-    return file_contents
-
-
-# Get a dictionary of all files in the current directory and subdirectories
+# Get a dictionary of all files in the current directory and subdirectories not including current file
 get_file_contents()
-# Drop the current file from the dictionary
-drop_current_file(file_contents)
 
 print(f"Found the following files: {list(file_contents.keys())}")
 
@@ -59,18 +55,16 @@ prompt = ChatPromptTemplate.from_messages(
 chain = prompt | llm
 
 def run_ai_model(filename):
+    """Run the AI model on the specified file and write the edited file to the same location."""
     ai_msg = chain.invoke(
         {
             "language": "Python",
-            "input": f"Edit this script to make it easier to read, cleaner, and more reproducible. Add comments where necessary: {file_contents[filename]}",
+            "input": f"Edit this script to make it more organized, easier to read, cleaner, and more reproducible. Add comments where necessary. The script should be a valid file format: {file_contents[filename]}",
         }
     )
 
-    llm_review_dir = "llm_review"
-    os.makedirs(llm_review_dir, exist_ok=True)
-
-    with open(os.path.join(llm_review_dir, filename), "w+") as file:
-        print(f"Writing the edited file to {llm_review_dir}/{filename}")
+    with open(os.path.join(filename), "w+") as file:
+        print(f"Writing the edited file to {filename}")
         file.write(ai_msg.content)
 
 

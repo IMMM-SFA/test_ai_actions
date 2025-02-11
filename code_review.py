@@ -66,7 +66,7 @@ def run_ai_model(filename):
         }
     )
 
-    with open(f"llm_review/{filename}", "w") as file:
+    with open(f"llm_review/{filename}", "w+") as file:
         print(f"Writing the edited file to llm_review/{filename}")
         file.write(ai_msg.content)
 
